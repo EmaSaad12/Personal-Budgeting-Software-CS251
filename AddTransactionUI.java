@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -11,93 +10,119 @@ public class AddTransactionUI extends JFrame {
     JButton saveBtn;
 
     TransactionService service = new TransactionService();
-
-    String userId; 
+    String userId;
 
     public AddTransactionUI(String userId) {
 
         this.userId = userId;
 
-        setTitle("Budget App");
-
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Add Transaction");
+        setSize(500, 450);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       setResizable(true);
 
-        // ===== Background Panel (Gradient) =====
-        JPanel background = new JPanel() {
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g;
-                Color c1 = new Color(236, 240, 241);
-                Color c2 = new Color(189, 195, 199);
-                GradientPaint gp = new GradientPaint(0, 0, c1, 0, getHeight(), c2);
-                g2.setPaint(gp);
-                g2.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
 
+
+       
+
+        // ===== Background 
+        JPanel background = new JPanel();
+        background.setBackground(new Color(25, 25, 25));
         background.setLayout(new GridBagLayout());
 
-        // ===== Card Panel =====
-        JPanel card = new JPanel(new GridLayout(4, 2, 15, 15));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+        // ===== Card 
+        JPanel card = new JPanel(new GridLayout(4, 2, 10, 15));
+        card.setBackground(new Color(35, 35, 35));
+        card.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
-        Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
-        Font inputFont = new Font("Segoe UI", Font.PLAIN, 14);
+        Font font = new Font("Segoe UI", Font.PLAIN, 14);
+        Color purple = new Color(128, 0, 128);
 
-        JLabel title = new JLabel("Add Transaction");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        title.setForeground(new Color(44, 62, 80));
+        // ===== Labels 
+        JLabel typeLabel = new JLabel("Type");
+        JLabel amountLabel = new JLabel("Amount");
+        JLabel categoryLabel = new JLabel("Category");
 
+        JLabel[] labels = {typeLabel, amountLabel, categoryLabel};
+        for (JLabel lbl : labels) {
+            lbl.setForeground(Color.LIGHT_GRAY);
+            lbl.setFont(font);
+        }
+
+        // ===== Inputs 
         typeBox = new JComboBox<>(new String[]{"Income", "Expense"});
         amountField = new JTextField();
         categoryField = new JTextField();
 
-        typeBox.setFont(inputFont);
-        amountField.setFont(inputFont);
-        categoryField.setFont(inputFont);
+        typeBox.setPreferredSize(new Dimension(400, 35));
+amountField.setPreferredSize(new Dimension(400, 35));
+categoryField.setPreferredSize(new Dimension(400, 35));
 
+        JTextField[] fields = {amountField, categoryField};
+
+        for (JTextField field : fields) {
+            field.setBackground(new Color(45, 45, 45));
+            field.setForeground(Color.WHITE);
+            field.setCaretColor(Color.WHITE);
+            field.setFont(font);
+            field.setBorder(BorderFactory.createLineBorder(purple, 2));
+        }
+
+        typeBox.setBackground(new Color(45, 45, 45));
+        typeBox.setForeground(Color.WHITE);
+        typeBox.setFont(font);
+
+        // ===== Button 
         saveBtn = new JButton("Save");
-        saveBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        saveBtn.setBackground(new Color(46, 204, 113));
+        saveBtn.setBackground(new Color(102, 0, 153));
         saveBtn.setForeground(Color.WHITE);
+        saveBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
         saveBtn.setFocusPainted(false);
         saveBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Hover effect
         saveBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                saveBtn.setBackground(new Color(39, 174, 96));
+                saveBtn.setBackground(new Color(128, 0, 180));
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                saveBtn.setBackground(new Color(46, 204, 113));
+                saveBtn.setBackground(new Color(102, 0, 153));
             }
         });
 
-        card.add(new JLabel("Type"));
+        // ===== Layout 
+        card.add(typeLabel);
         card.add(typeBox);
 
-        card.add(new JLabel("Amount"));
+        card.add(amountLabel);
         card.add(amountField);
 
-        card.add(new JLabel("Category"));
+        card.add(categoryLabel);
         card.add(categoryField);
 
         card.add(new JLabel(""));
         card.add(saveBtn);
+        JLabel title = new JLabel("Add Transaction");
+title.setForeground(Color.WHITE);
+title.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 20, 10);
-        background.add(title, gbc);
+GridBagConstraints gbc = new GridBagConstraints();
+gbc.gridx = 0;
+gbc.gridy = 0;
+gbc.insets = new Insets(10, 0, 20, 0);
+gbc.anchor = GridBagConstraints.CENTER; 
 
-        gbc.gridy = 1;
-        background.add(card, gbc);
+background.add(title, gbc);
 
+
+gbc.gridy = 1;
+background.add(card, gbc);
+
+
+
+
+    
         add(background);
 
         saveBtn.addActionListener(e -> save());
@@ -106,39 +131,38 @@ public class AddTransactionUI extends JFrame {
     }
 
     private void save() {
+        try {
+            String type = typeBox.getSelectedItem().toString();
+            String amountText = amountField.getText();
+            String category = categoryField.getText();
+            String date = LocalDate.now().toString();
 
-    try {
+            if (amountText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Enter amount");
+                return;
+            }
 
-        String type = typeBox.getSelectedItem().toString();
-        String amountText = amountField.getText();
-        String category = categoryField.getText();
-        String date = LocalDate.now().toString();
+            double amount = Double.parseDouble(amountText);
 
-        if (amountText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Enter amount");
-            return;
+            if (amount <= 0) {
+                JOptionPane.showMessageDialog(this, "Amount must be positive");
+                return;
+            }
+
+            Transaction t = new Transaction(type, amount, category, date, userId);
+            service.addTransaction(t);
+
+            JOptionPane.showMessageDialog(this, "Saved Successfully!");
+
+            amountField.setText("");
+            categoryField.setText("");
+            typeBox.setSelectedIndex(0);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-
-        double amount = Double.parseDouble(amountText);
-
-        if (amount <= 0) {
-            JOptionPane.showMessageDialog(this, "Amount must be positive");
-            return;
-        }
-
-        Transaction t = new Transaction(type, amount, category, date, userId);
-
-        service.addTransaction(t);
-
-        JOptionPane.showMessageDialog(this, "Saved Successfully!");
-        amountField.setText("");
-categoryField.setText("");
-typeBox.setSelectedIndex(0);
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, ex.getMessage());
     }
-}
+
     public static void main(String[] args) {
         new AddTransactionUI("TEST_USER_ID");
     }
