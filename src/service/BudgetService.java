@@ -40,7 +40,7 @@ public class BudgetService {
     public double calcExpense(String c, ArrayList<Transaction> transactions ){
     double total =0;
     for (Transaction t: transactions){
-        if(t.get_type().trim().equals("expense")&& t.getCategory().equalsIgnoreCase(c)){
+        if(t.getType().equalsIgnoreCase("expense")&& t.getCategory().equalsIgnoreCase(c)){
             total+= t.getAmount();
         }
     }

@@ -1,11 +1,10 @@
 package ui;
-
 import service.BudgetService;
 import model.Transaction;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import repository.TransactionRepository;
 
 public class BudgetScreen extends JFrame {
 
@@ -22,12 +21,8 @@ public class BudgetScreen extends JFrame {
 
         service = new BudgetService();
 
-        transactions = new ArrayList<>();
-
-        // sample transactions للتجربة
-        transactions.add(new Transaction("expense","food" , 500));
-        transactions.add(new Transaction("expense","food",700));
-
+        TransactionRepository repo = new TransactionRepository();
+        transactions = repo.loadTransactions();
         setTitle("Budget System");
 
         setSize(400,400);
@@ -112,5 +107,8 @@ public class BudgetScreen extends JFrame {
         });
 
         setVisible(true);
+    }
+    public static void main(String[] args) {
+        new BudgetScreen();
     }
 }
