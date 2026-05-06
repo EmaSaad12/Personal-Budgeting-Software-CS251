@@ -4,6 +4,7 @@ import service.BudgetService;
 import model.Transaction;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import repository.TransactionRepository;
 
@@ -18,75 +19,88 @@ public class BudgetScreen extends JFrame {
     public BudgetScreen() {
 
         service = new BudgetService();
+
         TransactionRepository repo = new TransactionRepository();
         transactions = repo.loadTransactions();
 
         setTitle("Budget System");
-        setSize(500,500);
+        setSize(500, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // 🌙 Colors
-        Color bg = new Color(18,18,18);
-        Color purple = new Color(155, 89, 182);
-        Color purpleHover = new Color(175, 110, 200);
-        Color textColor = Color.WHITE;
+        // Colors (دارك احترافي + موف غامق)
+        Color bg = new Color(20, 20, 25);
+        Color panelBg = new Color(30, 30, 35);
+        Color purple = new Color(90, 40, 130);
+        Color purpleGlow = new Color(130, 70, 180);
+        Color textColor = new Color(230, 230, 230);
 
-        // Panel
+        // Main panel
         JPanel panel = new JPanel();
         panel.setBackground(bg);
-        panel.setLayout(new GridLayout(7,1,15,15));
-        panel.setBorder(BorderFactory.createEmptyBorder(30,40,30,40));
+        panel.setLayout(new BorderLayout());
 
-        Font labelFont = new Font("Segoe UI", Font.PLAIN, 14);
+        // Card
+        JPanel card = new JPanel();
+        card.setBackground(panelBg);
+        card.setLayout(new GridLayout(8, 1, 12, 12));
+        card.setBorder(BorderFactory.createEmptyBorder(25, 30, 25, 30));
+
+        Font labelFont = new Font("Segoe UI", Font.PLAIN, 13);
         Font fieldFont = new Font("Segoe UI", Font.PLAIN, 14);
 
+        // Category
         JLabel categoryLabel = new JLabel("Category");
         categoryLabel.setForeground(textColor);
         categoryLabel.setFont(labelFont);
 
-        categoryField = new JTextField();
-        styleTextField(categoryField, fieldFont);
+        categoryField = createStyledField(fieldFont, purple, purpleGlow);
 
+        // Amount
         JLabel amountLabel = new JLabel("Amount");
         amountLabel.setForeground(textColor);
         amountLabel.setFont(labelFont);
 
-        amountField = new JTextField();
-        styleTextField(amountField, fieldFont);
+        amountField = createStyledField(fieldFont, purple, purpleGlow);
 
-        JButton createButton = createStyledButton("Create Budget", purple, purpleHover);
-        JButton editButton = createStyledButton("Edit Budget", purple, purpleHover);
-        JButton alertButton = createStyledButton("Check Alert", purple, purpleHover);
+        // Buttons
+        JButton createButton = createStyledButton("Create Budget", purple);
+        JButton editButton = createStyledButton("Edit Budget", purple);
+        JButton alertButton = createStyledButton("Check Alert", purple);
 
+        // Result
         resultLabel = new JLabel("", SwingConstants.CENTER);
-        resultLabel.setForeground(purple);
-        resultLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        resultLabel.setForeground(purpleGlow);
+        resultLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
-        // Add
-        panel.add(categoryLabel);
-        panel.add(categoryField);
-        panel.add(amountLabel);
-        panel.add(amountField);
-        panel.add(createButton);
-        panel.add(editButton);
-        panel.add(alertButton);
-        panel.add(resultLabel);
+        // Add to card
+        card.add(categoryLabel);
+        card.add(categoryField);
 
+        card.add(amountLabel);
+        card.add(amountField);
+
+        card.add(createButton);
+        card.add(editButton);
+        card.add(alertButton);
+
+        card.add(resultLabel);
+
+        panel.add(card, BorderLayout.CENTER);
         add(panel);
 
-        // Actions (زي ما هي)
+        // Actions 
         createButton.addActionListener(e -> {
             String category = categoryField.getText();
             double amount = Double.parseDouble(amountField.getText());
-            service.createBudget(amount ,category);
+            service.createBudget(amount, category);
             resultLabel.setText("✔ Budget Created");
         });
 
         editButton.addActionListener(e -> {
             String category = categoryField.getText();
             double amount = Double.parseDouble(amountField.getText());
-            service.editBudget(amount ,category);
+            service.editBudget(amount, category);
             resultLabel.setText("✔ Budget Updated");
         });
 
@@ -99,37 +113,54 @@ public class BudgetScreen extends JFrame {
         setVisible(true);
     }
 
-    //  TextField Style
-    private void styleTextField(JTextField field, Font font){
+    // TextField Style + Focus Effect
+    private JTextField createStyledField(Font font, Color borderColor, Color focusColor) {
+
+        JTextField field = new JTextField();
         field.setFont(font);
-        field.setBackground(new Color(30,30,30));
         field.setForeground(Color.WHITE);
         field.setCaretColor(Color.WHITE);
-        field.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-    }
+        field.setBackground(new Color(40, 40, 45));
 
-    // Button Style (مع Hover)
-    private JButton createStyledButton(String text, Color bg, Color hover){
+        field.setBorder(BorderFactory.createLineBorder(borderColor, 2));
 
-        JButton button = new JButton(text);
-        button.setFocusPainted(false);
-        button.setForeground(Color.WHITE);
-        button.setBackground(bg);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setBorder(BorderFactory.createEmptyBorder(12,15,12,15));
-
-        // Hover Effect
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(hover);
+        field.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+                field.setBorder(BorderFactory.createLineBorder(focusColor, 2));
+                field.setBackground(new Color(50, 50, 55));
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(bg);
+
+            public void focusLost(FocusEvent e) {
+                field.setBorder(BorderFactory.createLineBorder(borderColor, 2));
+                field.setBackground(new Color(40, 40, 45));
             }
         });
 
-        return button;
+        return field;
+    }
+
+    // Button Style + Hover
+    private JButton createStyledButton(String text, Color color) {
+
+        JButton btn = new JButton(text);
+        btn.setFocusPainted(false);
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(color);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setBorder(BorderFactory.createEmptyBorder(12, 10, 12, 10));
+
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                btn.setBackground(new Color(110, 60, 160)); // darker hover
+            }
+
+            public void mouseExited(MouseEvent e) {
+                btn.setBackground(color);
+            }
+        });
+
+        return btn;
     }
 
     public static void main(String[] args) {
