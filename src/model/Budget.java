@@ -22,6 +22,5 @@ public class Budget {
         this.category = c;
     }
 
-
-
 }
+
