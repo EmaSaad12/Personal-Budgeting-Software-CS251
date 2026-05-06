@@ -28,7 +28,7 @@ public class BudgetScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Colors (دارك احترافي + موف غامق)
+        // Colors
         Color bg = new Color(20, 20, 25);
         Color panelBg = new Color(30, 30, 35);
         Color purple = new Color(90, 40, 130);
