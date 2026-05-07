@@ -22,7 +22,7 @@ public class ReportScreen extends JFrame {
     private JLabel insightLabel;
     private TransactionRepository repo;
 
-    // --- الألوان الموحدة للمشروع ---
+    
     Color bg = new Color(20, 20, 25);
     Color panelBg = new Color(30, 30, 35);
     Color purple = new Color(90, 40, 130);
@@ -38,7 +38,30 @@ public class ReportScreen extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         getContentPane().setBackground(bg); 
+        
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(bg);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
 
+        JButton dashBtn = new JButton("\u2190 Back to Dashboard");
+        dashBtn.setBackground(bg); 
+        dashBtn.setForeground(Color.LIGHT_GRAY);
+        dashBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        dashBtn.setBorderPainted(false); 
+        dashBtn.setFocusPainted(false);
+        dashBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        dashBtn.addActionListener(e -> {
+            new DashboardScreen().setVisible(true); 
+            this.dispose(); 
+        });
+        
+        topPanel.add(dashBtn);
+        
+        JPanel northContainer = new JPanel();
+        northContainer.setLayout(new BoxLayout(northContainer, BoxLayout.Y_AXIS));
+        northContainer.setBackground(bg);
+        northContainer.add(topPanel);
         
         JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
         datePanel.setBackground(panelBg);
@@ -57,10 +80,9 @@ public class ReportScreen extends JFrame {
         datePanel.add(endLbl);
         datePanel.add(endDateField);
         datePanel.add(generateBtn);
+        datePanel.setBackground(bg);
 
-        add(datePanel, BorderLayout.NORTH);
-
-        
+       
         chartsPanel = new JPanel(new GridLayout(1, 2, 20, 20));
         chartsPanel.setBackground(bg);
         chartsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -68,14 +90,27 @@ public class ReportScreen extends JFrame {
 
         
         insightLabel = new JLabel("Click 'Update Analytics' to see insights.", SwingConstants.CENTER);
-        insightLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        insightLabel.setFont(new Font("Segoe UI", Font.ITALIC, 16)); 
         insightLabel.setForeground(purpleGlow); 
+        insightLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         
+        
+        northContainer.add(topPanel);
+        northContainer.add(datePanel);
+        northContainer.add(insightLabel);
+        northContainer.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, purple));
+
+        add(northContainer, BorderLayout.NORTH);
+
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(panelBg);
-        bottomPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, purple));
+        bottomPanel.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 0, 0, 0, purple), 
+         BorderFactory.createEmptyBorder(10, 20, 10, 20)
+));
         bottomPanel.add(insightLabel, BorderLayout.CENTER);
         bottomPanel.setPreferredSize(new Dimension(1000, 80));
+        bottomPanel.setBackground(bg);
         
         add(bottomPanel, BorderLayout.SOUTH);
 

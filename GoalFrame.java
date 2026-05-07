@@ -25,10 +25,30 @@ public class GoalFrame extends JFrame {
 
     public GoalFrame() {
         setTitle("Saving Goal Manager");
-        setSize(650, 850);
+        setSize(650, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout(15, 15));
+        setLayout(new BorderLayout());
         getContentPane().setBackground(bg);
+        
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(bg);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+
+        JButton dashBtn = new JButton("\u2190 Back to Dashboard");
+        dashBtn.setBackground(bg); 
+        dashBtn.setForeground(Color.LIGHT_GRAY);
+        dashBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        dashBtn.setBorderPainted(false); 
+        dashBtn.setFocusPainted(false);
+        dashBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        dashBtn.addActionListener(e -> {
+            new DashboardScreen().setVisible(true); 
+            this.dispose(); 
+        });
+        
+        topPanel.add(dashBtn);
+        add(topPanel, BorderLayout.NORTH);
 
         
         Font fieldFont = new Font("Segoe UI", Font.PLAIN, 14);
@@ -106,7 +126,7 @@ public class GoalFrame extends JFrame {
         mainContent.add(statusPanel);
 
         JPanel marginWrapper = new JPanel(new BorderLayout());
-        marginWrapper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        marginWrapper.setBorder(BorderFactory.createEmptyBorder(15, 20, 20, 20));
         marginWrapper.setBackground(bg);
         marginWrapper.add(mainContent, BorderLayout.CENTER);
         

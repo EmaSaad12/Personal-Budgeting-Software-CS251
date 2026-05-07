@@ -1,3 +1,4 @@
+package com.mycompany.a2.us6and7;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -17,10 +18,31 @@ public class AddTransactionUI extends JFrame {
         this.userId = userId;
 
         setTitle("Add Transaction");
-        setSize(500, 450);
+        setSize(500, 480);//samaa changed from 450 to 480
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
        setResizable(true);
+       
+       //sama added
+       setLayout(new BorderLayout());
+       JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(25, 25, 25));
+        
+        JButton dashBtn = new JButton("\u2190 Back to Dashboard"); 
+        dashBtn.setBackground(new Color(25, 25, 25)); 
+        dashBtn.setForeground(Color.LIGHT_GRAY);
+        dashBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        dashBtn.setBorderPainted(false); 
+        dashBtn.setFocusPainted(false);
+        dashBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        dashBtn.addActionListener(e -> {
+            new DashboardScreen().setVisible(true); 
+            this.dispose(); 
+        });
+        
+        topPanel.add(dashBtn);
+        add(topPanel, BorderLayout.NORTH); 
 
 
 
@@ -118,6 +140,9 @@ background.add(title, gbc);
 
 gbc.gridy = 1;
 background.add(card, gbc);
+
+//sama added
+add(background, BorderLayout.CENTER);
 
 
 
