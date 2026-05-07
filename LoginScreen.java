@@ -1,3 +1,5 @@
+package com.mycompany.a2.us6and7;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -104,37 +106,22 @@ public class LoginScreen extends JFrame {
         });
 
         // Login Button Action
-        loginButton.addActionListener(e -> {
-
+loginButton.addActionListener(e -> {
             String email = emailField.getText();
             String password = new String(passwordField.getPassword());
 
             String result = auth.login(email, password);
 
             if (result.equals("Login successful")) {
-
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Login Successful!\nWelcome back.",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
-
-                new DashboardScreen();
+                User loggedInUser = auth.getUserByEmail(email); 
+                JOptionPane.showMessageDialog(this, "Welcome Back, " + loggedInUser.getName());
+                new DashboardScreen(loggedInUser).setVisible(true); 
                 dispose();
-
             } else {
-
-                JOptionPane.showMessageDialog(
-                    this,
-                    result,
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-                );
+                JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
-
     public static void main(String[] args) {
         new LoginScreen();
     }

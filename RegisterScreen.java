@@ -1,3 +1,5 @@
+package com.mycompany.a2.us6and7;
+
 import javax.swing.*;
 import java.awt.*;
 
