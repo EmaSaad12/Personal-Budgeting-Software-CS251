@@ -20,8 +20,8 @@ public class BudgetScreen extends JFrame {
         transactions = repo.loadTransactions();
 
         setTitle("Budget System");
-        setSize(500, 550);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 600);//sama changed from 550 to 600
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Colors
@@ -30,11 +30,32 @@ public class BudgetScreen extends JFrame {
         Color purple = new Color(90, 40, 130);
         Color purpleGlow = new Color(130, 70, 180);
         Color textColor = new Color(230, 230, 230);
+        //added by sama-topPanel
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(bg); 
+        
+        JButton dashBtn = new JButton("\u2190 Back to Dashboard");
+        dashBtn.setBackground(bg); 
+        dashBtn.setForeground(Color.LIGHT_GRAY);
+        dashBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        dashBtn.setBorderPainted(false); 
+        dashBtn.setFocusPainted(false);
+        dashBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        dashBtn.addActionListener(e -> {
+            new DashboardScreen().setVisible(true); 
+            this.dispose(); 
+        });
+        
+        topPanel.add(dashBtn);
+        add(topPanel, BorderLayout.NORTH); 
 
         // Main panel
         JPanel panel = new JPanel();
         panel.setBackground(bg);
         panel.setLayout(new BorderLayout());
+        
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));//added by sama
 
         // Card
         JPanel card = new JPanel();
@@ -64,9 +85,7 @@ public class BudgetScreen extends JFrame {
         JButton editButton = createStyledButton("Edit Budget", purple);
         JButton alertButton = createStyledButton("Check Alert", purple);
         
-        
-        JButton goalButton = createStyledButton("Manage Saving Goals", new Color(41, 128, 185)); // لون أزرق هادي
-        JButton reportButton = createStyledButton("View Analytics Dashboard (SRS)", new Color(39, 174, 96)); // لون أخضر
+
 
         resultLabel = new JLabel("", SwingConstants.CENTER);
         resultLabel.setForeground(purpleGlow);
@@ -88,13 +107,12 @@ public class BudgetScreen extends JFrame {
         card.add(editButton);
         card.add(alertButton);
 
-        card.add(goalButton);   
-        card.add(reportButton);
         
         card.add(resultLabel);
 
         panel.add(card, BorderLayout.CENTER);
         add(panel);
+        add(panel, BorderLayout.CENTER);//added by sama
 
         // Actions 
         createButton.addActionListener(e -> {
@@ -115,15 +133,6 @@ public class BudgetScreen extends JFrame {
             String category = categoryField.getText();
             String result = service.CheckAlert(category, transactions);
             resultLabel.setText(result);
-        });
-        
-        goalButton.addActionListener(e -> {
-            new GoalFrame().setVisible(true); 
-        });
-
-       
-        reportButton.addActionListener(e -> {
-            new ReportScreen().setVisible(true);
         });
 
         setVisible(true);
