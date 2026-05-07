@@ -1,3 +1,5 @@
+package com.mycompany.a2.us6and7;
+
 import java.io.*;
 import java.util.*;
 
@@ -135,4 +137,20 @@ public class AuthService {
 
         return users;
     }
+
+public User getUserByEmail(String email) {
+    File file = new File("users.txt"); 
+    try (Scanner scanner = new Scanner(file)) {
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] data = line.split(","); 
+            if (data.length >= 3 && data[2].equalsIgnoreCase(email.trim())) {
+                return new User(data[0], data[1], data[2], data[3]); 
+            }
+        }
+    } catch (Exception e) {
+        System.err.println("Error reading users file: " + e.getMessage());
+    }
+    return null; 
+}
 }
