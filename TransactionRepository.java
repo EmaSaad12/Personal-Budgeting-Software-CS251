@@ -13,7 +13,7 @@ public class TransactionRepository {
         } catch (Exception e) { e.printStackTrace(); }
     }
     
-        // ✅ الجديد بقى
+        
     public ArrayList<Transaction> loadTransactions() {
 
         ArrayList<Transaction> list = new ArrayList<>();
@@ -29,15 +29,16 @@ public class TransactionRepository {
 
                 String line = sc.nextLine();
                 String[] data = line.split(",");
-                
+                //added if condition
                 if(data.length>=6){
-                                String type = data[1];
+                String type = data[1];
                 double amount = Double.parseDouble(data[2]);
                 String category = data[3];
                 String userId = data[4];
                 String date = data[5];
 
                 Transaction t = new Transaction(type, amount, category, date, userId);
+                //added
                 java.lang.reflect.Field idField = Transaction.class.getDeclaredField("id");
                 idField.setAccessible(true);
                 idField.set(t, data[0]);
