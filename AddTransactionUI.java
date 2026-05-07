@@ -1,194 +1,161 @@
 package com.mycompany.a2.us6and7;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 
 public class AddTransactionUI extends JFrame {
 
-    JComboBox<String> typeBox;
-    JTextField amountField;
-    JTextField categoryField;
-    JButton saveBtn;
+    private JComboBox<String> typeBox;
+    private JComboBox<String> categoryBox;
+    private JTextField amountField;
+    private JButton saveBtn;
+    
+    private String[] incomeCategories = {"Salary", "Bonus", "Freelance", "Investment", "Gift"};
+    private String[] expenseCategories = {"Food", "Rent", "Transport", "Shopping", "Health", "Entertainment", "Electricity", "Water", "Gas"};
 
-    TransactionService service = new TransactionService();
-    String userId;
+    private TransactionService service = new TransactionService();
+    private User currentUser;
 
-    public AddTransactionUI(String userId) {
+    // الألوان الموحدة
+    Color bg = new Color(20, 20, 25);
+    Color cardBg = new Color(30, 30, 35);
+    Color purple = new Color(90, 40, 130);
+    Color purpleGlow = new Color(130, 70, 180);
+    Color textColor = new Color(230, 230, 230);
 
-        this.userId = userId;
+    public AddTransactionUI(User user) {
+        this.currentUser = user;
 
         setTitle("Add Transaction");
-        setSize(500, 480);//samaa changed from 450 to 480
-        setLocationRelativeTo(null);
+        setSize(500, 600); 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-       setResizable(true);
-       
-       //sama added
-       setLayout(new BorderLayout());
-       JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topPanel.setBackground(new Color(25, 25, 25));
-        
-        JButton dashBtn = new JButton("\u2190 Back to Dashboard"); 
-        dashBtn.setBackground(new Color(25, 25, 25)); 
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(bg);
+
+     
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(bg);
+        JButton dashBtn = new JButton("\u2190 Back to Dashboard");
+        dashBtn.setBackground(bg); 
         dashBtn.setForeground(Color.LIGHT_GRAY);
         dashBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        dashBtn.setBorderPainted(false); 
-        dashBtn.setFocusPainted(false);
+        dashBtn.setBorderPainted(false);
         dashBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
         dashBtn.addActionListener(e -> {
-            new DashboardScreen().setVisible(true); 
+            new DashboardScreen(currentUser).setVisible(true); //
             this.dispose(); 
         });
-        
         topPanel.add(dashBtn);
-        add(topPanel, BorderLayout.NORTH); 
+        add(topPanel, BorderLayout.NORTH);
 
+      
+        JPanel mainWrapper = new JPanel(new GridBagLayout());
+        mainWrapper.setBackground(bg);
 
+     
+        JPanel card = new JPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBackground(cardBg);
+        card.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(purple, 1),
+            BorderFactory.createEmptyBorder(30, 40, 30, 40) 
+        ));
+        card.setPreferredSize(new Dimension(380, 450));
 
-       
-
-        // ===== Background 
-        JPanel background = new JPanel();
-        background.setBackground(new Color(25, 25, 25));
-        background.setLayout(new GridBagLayout());
-
-        // ===== Card 
-        JPanel card = new JPanel(new GridLayout(4, 2, 10, 15));
-        card.setBackground(new Color(35, 35, 35));
-        card.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-
-        Font font = new Font("Segoe UI", Font.PLAIN, 14);
-        Color purple = new Color(128, 0, 128);
-
-        // ===== Labels 
-        JLabel typeLabel = new JLabel("Type");
-        JLabel amountLabel = new JLabel("Amount");
-        JLabel categoryLabel = new JLabel("Category");
-
-        JLabel[] labels = {typeLabel, amountLabel, categoryLabel};
-        for (JLabel lbl : labels) {
-            lbl.setForeground(Color.LIGHT_GRAY);
-            lbl.setFont(font);
-        }
-
-        // ===== Inputs 
-        typeBox = new JComboBox<>(new String[]{"Income", "Expense"});
-        amountField = new JTextField();
-        categoryField = new JTextField();
-
-        typeBox.setPreferredSize(new Dimension(400, 35));
-amountField.setPreferredSize(new Dimension(400, 35));
-categoryField.setPreferredSize(new Dimension(400, 35));
-
-        JTextField[] fields = {amountField, categoryField};
-
-        for (JTextField field : fields) {
-            field.setBackground(new Color(45, 45, 45));
-            field.setForeground(Color.WHITE);
-            field.setCaretColor(Color.WHITE);
-            field.setFont(font);
-            field.setBorder(BorderFactory.createLineBorder(purple, 2));
-        }
-
-        typeBox.setBackground(new Color(45, 45, 45));
-        typeBox.setForeground(Color.WHITE);
-        typeBox.setFont(font);
-
-        // ===== Button 
-        saveBtn = new JButton("Save");
-        saveBtn.setBackground(new Color(102, 0, 153));
-        saveBtn.setForeground(Color.WHITE);
-        saveBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        saveBtn.setFocusPainted(false);
-        saveBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        saveBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                saveBtn.setBackground(new Color(128, 0, 180));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                saveBtn.setBackground(new Color(102, 0, 153));
-            }
-        });
-
-        // ===== Layout 
-        card.add(typeLabel);
-        card.add(typeBox);
-
-        card.add(amountLabel);
-        card.add(amountField);
-
-        card.add(categoryLabel);
-        card.add(categoryField);
-
-        card.add(new JLabel(""));
-        card.add(saveBtn);
-        JLabel title = new JLabel("Add Transaction");
-title.setForeground(Color.WHITE);
-title.setFont(new Font("Segoe UI", Font.BOLD, 22));
-
-GridBagConstraints gbc = new GridBagConstraints();
-gbc.gridx = 0;
-gbc.gridy = 0;
-gbc.insets = new Insets(10, 0, 20, 0);
-gbc.anchor = GridBagConstraints.CENTER; 
-
-background.add(title, gbc);
-
-
-gbc.gridy = 1;
-background.add(card, gbc);
-
-//sama added
-add(background, BorderLayout.CENTER);
-
-
-
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 13);
+        Font inputFont = new Font("Segoe UI", Font.PLAIN, 14);
 
     
-        add(background);
+        typeBox = new JComboBox<>(new String[]{"Income", "Expense"});
+        categoryBox = new JComboBox<>();
+        amountField = new JTextField();
+        saveBtn = new JButton("Save Transaction");
 
+        styleCombo(typeBox, inputFont);
+        styleCombo(categoryBox, inputFont);
+        styleField(amountField, inputFont);
+        
+        saveBtn.setBackground(purple);
+        saveBtn.setForeground(Color.WHITE);
+        saveBtn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        saveBtn.setFocusPainted(false);
+        saveBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        saveBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45)); 
+
+        
+        addFormField(card, "Transaction Type", typeBox, labelFont);
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
+        addFormField(card, "Amount ($)", amountField, labelFont);
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
+        addFormField(card, "Category", categoryBox, labelFont);
+        card.add(Box.createRigidArea(new Dimension(0, 30)));
+        card.add(saveBtn);
+
+        mainWrapper.add(card);
+        add(mainWrapper, BorderLayout.CENTER);
+
+   
+        updateCategories();
+        typeBox.addActionListener(e -> updateCategories());
         saveBtn.addActionListener(e -> save());
 
         setVisible(true);
     }
 
-    private void save() {
-        try {
-            String type = typeBox.getSelectedItem().toString();
-            String amountText = amountField.getText();
-            String category = categoryField.getText();
-            String date = LocalDate.now().toString();
+    private void addFormField(JPanel container, String text, JComponent field, Font font) {
+        JLabel lbl = new JLabel(text);
+        lbl.setForeground(textColor);
+        lbl.setFont(font);
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+        field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        container.add(lbl);
+        container.add(field);
+    }
 
-            if (amountText.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Enter amount");
-                return;
-            }
-
-            double amount = Double.parseDouble(amountText);
-
-            if (amount <= 0) {
-                JOptionPane.showMessageDialog(this, "Amount must be positive");
-                return;
-            }
-
-            Transaction t = new Transaction(type, amount, category, date, userId);
-            service.addTransaction(t);
-
-            JOptionPane.showMessageDialog(this, "Saved Successfully!");
-
-            amountField.setText("");
-            categoryField.setText("");
-            typeBox.setSelectedIndex(0);
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+    private void updateCategories() {
+        categoryBox.removeAllItems();
+        if (typeBox.getSelectedItem().equals("Income")) {
+            for (String cat : incomeCategories) categoryBox.addItem(cat);
+        } else {
+            for (String cat : expenseCategories) categoryBox.addItem(cat);
         }
     }
 
-    public static void main(String[] args) {
-        new AddTransactionUI("TEST_USER_ID");
+    private void save() {
+        try {
+            double amount = Double.parseDouble(amountField.getText());
+            Transaction t = new Transaction(
+                typeBox.getSelectedItem().toString(),
+                amount,
+                categoryBox.getSelectedItem().toString(),
+                LocalDate.now().toString(),
+                currentUser.getId() 
+            );
+            service.addTransaction(t);
+            JOptionPane.showMessageDialog(this, "Saved Successfully!");
+            amountField.setText("");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid amount");
+        }
+    }
+
+    private void styleCombo(JComboBox<String> b, Font f) {
+        b.setBackground(new Color(45, 45, 50));
+        b.setForeground(Color.WHITE);
+        b.setFont(f);
+        b.setBorder(BorderFactory.createLineBorder(purple, 1));
+    }
+
+    private void styleField(JTextField f, Font font) {
+        f.setBackground(new Color(45, 45, 50));
+        f.setForeground(Color.WHITE);
+        f.setCaretColor(Color.WHITE);
+        f.setFont(font);
+        f.setBorder(BorderFactory.createLineBorder(purple, 2));
     }
 }
