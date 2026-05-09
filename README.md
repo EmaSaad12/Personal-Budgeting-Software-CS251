@@ -12,49 +12,49 @@ The system provides an interactive and user-friendly experience that enables use
 
 ## ✨ Key Features
 
-* Secure User Login & Registration  
-* Add and Manage Financial Transactions  
-* Track Income and Expenses  
-* Remaining Balance Calculation  
-* Financial Reports & Budget Monitoring  
-* Interactive Dashboard  
-* Clean and Easy-to-Use Interface  
+- Secure User Login & Registration  
+- Add and Manage Financial Transactions  
+- Track Income and Expenses  
+- Remaining Balance Calculation  
+- Financial Reports & Budget Monitoring  
+- Interactive Dashboard  
+- Clean and Easy-to-Use Interface  
 
 ---
 
 ## 🛠️ Technologies Used
 
-* Java  
-* Java Swing  
-* Object-Oriented Programming (OOP)  
-* File Handling  
+- Java  
+- Java Swing  
+- Object-Oriented Programming (OOP)  
+- File Handling  
 
 ---
-
-## 📂 Project Structure
-
-```bash
-src/
-│── controller/
-│── model/
-│── repository/
-│── service/
-│── ui/
-└── Main.java
 
 ## 👩‍💻 Team Members
 
 - The Project  
 - Mariem Badawy  
 - Sama Sameh  
-- Nour Ahmed
+- Nour Ahmed  
+
+---
 
 ## 📌 Project Purpose
 
 This project was developed as part of a software development learning experience to practice:
 
-* Java Programming  
-* GUI Development  
-* Object-Oriented Programming (OOP) Principles  
-* Software Architecture  
-* Problem Solving & Team Collaboration  
+- Java Programming  
+- GUI Development  
+- Object-Oriented Programming (OOP) Principles  
+- Software Architecture  
+- Problem Solving & Team Collaboration  
+
+---
+
+## 🚀 How to Run the Project
+
+1. Clone the repository:
+
+```bash
+git clone <repo-link>
