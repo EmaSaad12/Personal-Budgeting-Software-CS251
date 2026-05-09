@@ -1,47 +1,60 @@
-# Personal Finance Management System
+# 💸 Personal Budget Tracker
 
-A Java Swing desktop application for managing personal finances.
+<p align="center">
+  <img src="screenshots/dashboard.jpeg" width="700"/>
+</p>
 
-## Features
+A desktop-based financial management application designed to help users efficiently track their income, expenses, and overall budget in a simple and organized way.
 
-- User Authentication
-- Dashboard Analytics
-- Budget Management
-- Transaction Tracking
-- Savings Goals
-- Financial Reports
-- Charts & Insights
+The system provides an interactive and user-friendly experience that enables users to manage their personal finances and monitor spending habits effectively.
 
-## Technologies Used
+---
 
-- Java
-- Java Swing
-- OOP
-- File Handling
-- JFreeChart
+## ✨ Key Features
 
-## Project Supervisor
+* Secure User Login & Registration  
+* Add and Manage Financial Transactions  
+* Track Income and Expenses  
+* Remaining Balance Calculation  
+* Financial Reports & Budget Monitoring  
+* Interactive Dashboard  
+* Clean and Easy-to-Use Interface  
 
-Dr. Mohamed El-Ramly
+---
 
-## Screenshots
-### Sign Up
-![Sign Up](screenshots/signup.png)
+## 🛠️ Technologies Used
 
-### Login Screen
-![Login](screenshots/login.jpeg)
+* Java  
+* Java Swing  
+* Object-Oriented Programming (OOP)  
+* File Handling  
 
-### Budget Screen
-![Budget](screenshots/budget.png)
+---
 
-### Saving Goals
-![Goals](screenshots/savingGoal.jpeg)
+## 📂 Project Structure
 
-### Dashboard
-![Dashboard](screenshots/dashboard.jpeg)
+```bash
+src/
+│── controller/
+│── model/
+│── repository/
+│── service/
+│── ui/
+└── Main.java
 
-### Reports
-![Reports](screenshots/report.jpeg)
+## 👩‍💻 Team Members
 
+- The Project  
+- Mariem Badawy  
+- Sama Sameh  
+- Nour Ahmed
 
+## 📌 Project Purpose
 
+This project was developed as part of a software development learning experience to practice:
+
+* Java Programming  
+* GUI Development  
+* Object-Oriented Programming (OOP) Principles  
+* Software Architecture  
+* Problem Solving & Team Collaboration  
